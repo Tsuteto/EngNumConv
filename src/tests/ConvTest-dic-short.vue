@@ -1,0 +1,1584 @@
+<script setup lang="ts">
+import { EngNumConv, type ResultData, type Input, ResultFormat } from '@/components/EngNumConv';
+import { ref, type Ref } from 'vue';
+import Testcase from './Testcase.vue';
+
+type TestResult = {
+  input: Input;
+  output: ResultData;
+  assertion: boolean;
+  correct: string;
+}
+
+type TestCase = {
+  input: Input;
+  result: {
+    text: string;
+  }
+}
+
+const TEST_CASES_TIER1 = [
+  {
+    input: { coef: "0", exp: "0" },
+    result: {text: "Zero"}
+  },
+  {
+    input: { coef: "1", exp: "0" },
+    result: {text: "One"}
+  },
+  {
+    input: { coef: "2", exp: "0" },
+    result: {text: "Two"}
+  },
+  {
+    input: { coef: "3", exp: "0" },
+    result: {text: "Three"}
+  },
+  {
+    input: { coef: "4", exp: "0" },
+    result: {text: "Four"}
+  },
+  {
+    input: { coef: "5", exp: "0" },
+    result: {text: "Five"}
+  },
+  {
+    input: { coef: "6", exp: "0" },
+    result: {text: "Six"}
+  },
+  {
+    input: { coef: "7", exp: "0" },
+    result: {text: "Seven"}
+  },
+  {
+    input: { coef: "8", exp: "0" },
+    result: {text: "Eight"}
+  },
+  {
+    input: { coef: "9", exp: "0" },
+    result: {text: "Nine"}
+  },
+  {
+    input: { coef: "10", exp: "0" },
+    result: {text: "Ten"}
+  },
+  {
+    input: { coef: "1", exp: "1" },
+    result: {text: "Ten"}
+  },
+  {
+    input: { coef: "11", exp: "0" },
+    result: {text: "Eleven"}
+  },
+  {
+    input: { coef: "2", exp: "1" },
+    result: {text: "Twenty"}
+  },
+  {
+    input: { coef: "1", exp: "2" },
+    result: {text: "One hundred"}
+  },
+  {
+    input: { coef: "1", exp: "3" },
+    result: {text: "One thousand"}
+  },
+  {
+    input: { coef: "1", exp: "4" },
+    result: {text: "Ten thousand"}
+  },
+  {
+    input: { coef: "1", exp: "5" },
+    result: {text: "One hundred thousand"}
+  },
+  {
+    input: { coef: "1", exp: "6" },
+    result: {text: "One mi-llion"}
+  },
+  {
+    input: { coef: "1", exp: "7" },
+    result: {text: "Ten mi-llion"}
+  },
+  {
+    input: { coef: "1", exp: "8" },
+    result: {text: "One hundred mi-llion"}
+  },
+  {
+    input: { coef: "1", exp: "9" },
+    result: {text: "One bi-llion"}
+  },
+  {
+    input: { coef: "1", exp: "10" },
+    result: {text: "Ten bi-llion"}
+  },
+  {
+    input: { coef: "1", exp: "11" },
+    result: {text: "One hundred bi-llion"}
+  },
+  {
+    input: { coef: "1", exp: "12" },
+    result: {text: "One tri-llion"}
+  },
+  {
+    input: { coef: "1", exp: "13" },
+    result: {text: "Ten tri-llion"}
+  },
+  {
+    input: { coef: "1", exp: "14" },
+    result: {text: "One hundred tri-llion"}
+  },
+  {
+    input: { coef: "1", exp: "15" },
+    result: {text: "One quadri-llion"}
+  },
+  {
+    input: { coef: "1", exp: "16" },
+    result: {text: "Ten quadri-llion"}
+  },
+  {
+    input: { coef: "1", exp: "17" },
+    result: {text: "One hundred quadri-llion"}
+  },
+  {
+    input: { coef: "1", exp: "18" },
+    result: {text: "One quinti-llion"}
+  },
+  {
+    input: { coef: "1", exp: "19" },
+    result: {text: "Ten quinti-llion"}
+  },
+  {
+    input: { coef: "1", exp: "20" },
+    result: {text: "One hundred quinti-llion"}
+  },
+  {
+    input: { coef: "1", exp: "21" },
+    result: {text: "One sexti-llion"}
+  },
+  {
+    input: { coef: "1", exp: "22" },
+    result: {text: "Ten sexti-llion"}
+  },
+  {
+    input: { coef: "1", exp: "23" },
+    result: {text: "One hundred sexti-llion"}
+  },
+  {
+    input: { coef: "1", exp: "24" },
+    result: {text: "One septi-llion"}
+  },
+  {
+    input: { coef: "1", exp: "25" },
+    result: {text: "Ten septi-llion"}
+  },
+  {
+    input: { coef: "1", exp: "26" },
+    result: {text: "One hundred septi-llion"}
+  },
+  {
+    input: { coef: "1", exp: "27" },
+    result: {text: "One octi-llion"}
+  },
+  {
+    input: { coef: "1", exp: "28" },
+    result: {text: "Ten octi-llion"}
+  },
+  {
+    input: { coef: "1", exp: "29" },
+    result: {text: "One hundred octi-llion"}
+  },
+  {
+    input: { coef: "1", exp: "30" },
+    result: {text: "One noni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "31" },
+    result: {text: "Ten noni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "32" },
+    result: {text: "One hundred noni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "33" },
+    result: {text: "One dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "34" },
+    result: {text: "Ten dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "35" },
+    result: {text: "One hundred dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "36" },
+    result: {text: "One un-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "37" },
+    result: {text: "Ten un-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "38" },
+    result: {text: "One hundred un-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "39" },
+    result: {text: "One duo-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "40" },
+    result: {text: "Ten duo-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "41" },
+    result: {text: "One hundred duo-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "42" },
+    result: {text: "One tre-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "43" },
+    result: {text: "Ten tre-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "44" },
+    result: {text: "One hundred tre-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "45" },
+    result: {text: "One quattuor-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "46" },
+    result: {text: "Ten quattuor-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "47" },
+    result: {text: "One hundred quattuor-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "48" },
+    result: {text: "One quin-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "49" },
+    result: {text: "Ten quin-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "50" },
+    result: {text: "One hundred quin-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "51" },
+    result: {text: "One se-dec-illion"} // Confirmed with Wikipedia
+  },
+  {
+    input: { coef: "1", exp: "52" },
+    result: {text: "Ten se-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "53" },
+    result: {text: "One hundred se-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "54" },
+    result: {text: "One septen-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "55" },
+    result: {text: "Ten septen-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "56" },
+    result: {text: "One hundred septen-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "57" },
+    result: {text: "One octo-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "58" },
+    result: {text: "Ten octo-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "59" },
+    result: {text: "One hundred octo-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "60" },
+    result: {text: "One noven-dec-illion"} // Confirmed with Wikipedia
+  },
+  {
+    input: { coef: "1", exp: "61" },
+    result: {text: "Ten noven-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "62" },
+    result: {text: "One hundred noven-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "63" },
+    result: {text: "One vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "64" },
+    result: {text: "Ten vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "65" },
+    result: {text: "One hundred vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "66" },
+    result: {text: "One un-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "67" },
+    result: {text: "Ten un-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "68" },
+    result: {text: "One hundred un-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "69" },
+    result: {text: "One duo-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "70" },
+    result: {text: "Ten duo-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "71" },
+    result: {text: "One hundred duo-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "72" },
+    result: {text: "One tres-vigin-tillion"} // Confirmed with Wikipedia, JB
+  },
+  {
+    input: { coef: "1", exp: "73" },
+    result: {text: "Ten tres-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "74" },
+    result: {text: "One hundred tres-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "75" },
+    result: {text: "One quattuor-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "76" },
+    result: {text: "Ten quattuor-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "77" },
+    result: {text: "One hundred quattuor-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "78" },
+    result: {text: "One quin-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "79" },
+    result: {text: "Ten quin-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "80" },
+    result: {text: "One hundred quin-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "81" },
+    result: {text: "One ses-vigin-tillion"} // Confirmed with Wikipedia, JB
+  },
+  {
+    input: { coef: "1", exp: "82" },
+    result: {text: "Ten ses-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "83" },
+    result: {text: "One hundred ses-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "84" },
+    result: {text: "One septem-vigin-tillion"} // Confirmed with Wikipedia, JB
+  },
+  {
+    input: { coef: "1", exp: "85" },
+    result: {text: "Ten septem-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "86" },
+    result: {text: "One hundred septem-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "87" },
+    result: {text: "One octo-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "88" },
+    result: {text: "Ten octo-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "89" },
+    result: {text: "One hundred octo-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "90" },
+    result: {text: "One novem-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "91" },
+    result: {text: "Ten novem-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "92" },
+    result: {text: "One hundred novem-vigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "93" },
+    result: {text: "One trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "94" },
+    result: {text: "Ten trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "95" },
+    result: {text: "One hundred trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "96" },
+    result: {text: "One un-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "97" },
+    result: {text: "Ten un-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "98" },
+    result: {text: "One hundred un-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "99" },
+    result: {text: "One duo-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "100" },
+    result: {text: "Ten duo-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "101" },
+    result: {text: "One hundred duo-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "102" },
+    result: {text: "One tres-trigin-tillion"} // Confirmed with Wikipedia, JB
+  },
+  {
+    input: { coef: "1", exp: "103" },
+    result: {text: "Ten tres-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "104" },
+    result: {text: "One hundred tres-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "105" },
+    result: {text: "One quattuor-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "106" },
+    result: {text: "Ten quattuor-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "107" },
+    result: {text: "One hundred quattuor-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "108" },
+    result: {text: "One quin-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "109" },
+    result: {text: "Ten quin-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "110" },
+    result: {text: "One hundred quin-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "111" },
+    result: {text: "One ses-trigin-tillion"} // Confirmed with Wikipedia, JB
+  },
+  {
+    input: { coef: "1", exp: "112" },
+    result: {text: "Ten ses-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "113" },
+    result: {text: "One hundred ses-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "114" },
+    result: {text: "One septen-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "115" },
+    result: {text: "Ten septen-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "116" },
+    result: {text: "One hundred septen-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "117" },
+    result: {text: "One octo-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "118" },
+    result: {text: "Ten octo-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "119" },
+    result: {text: "One hundred octo-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "120" },
+    result: {text: "One noven-trigin-tillion"} // Confirmed with JB
+  },
+  {
+    input: { coef: "1", exp: "121" },
+    result: {text: "Ten noven-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "122" },
+    result: {text: "One hundred noven-trigin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "123" },
+    result: {text: "One quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "124" },
+    result: {text: "Ten quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "125" },
+    result: {text: "One hundred quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "126" },
+    result: {text: "One un-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "127" },
+    result: {text: "Ten un-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "128" },
+    result: {text: "One hundred un-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "129" },
+    result: {text: "One duo-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "130" },
+    result: {text: "Ten duo-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "131" },
+    result: {text: "One hundred duo-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "132" },
+    result: {text: "One tres-quadragin-tillion"} // Confirmed with JB
+  },
+  {
+    input: { coef: "1", exp: "133" },
+    result: {text: "Ten tres-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "134" },
+    result: {text: "One hundred tres-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "135" },
+    result: {text: "One quattuor-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "136" },
+    result: {text: "Ten quattuor-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "137" },
+    result: {text: "One hundred quattuor-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "138" },
+    result: {text: "One quin-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "139" },
+    result: {text: "Ten quin-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "140" },
+    result: {text: "One hundred quin-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "141" },
+    result: {text: "One ses-quadragin-tillion"} // Confirmed with JB
+  },
+  {
+    input: { coef: "1", exp: "142" },
+    result: {text: "Ten ses-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "143" },
+    result: {text: "One hundred ses-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "144" },
+    result: {text: "One septen-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "145" },
+    result: {text: "Ten septen-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "146" },
+    result: {text: "One hundred septen-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "147" },
+    result: {text: "One octo-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "148" },
+    result: {text: "Ten octo-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "149" },
+    result: {text: "One hundred octo-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "150" },
+    result: {text: "One noven-quadragin-tillion"} // Confirmed with JB
+  },
+  {
+    input: { coef: "1", exp: "151" },
+    result: {text: "Ten noven-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "152" },
+    result: {text: "One hundred noven-quadragin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "153" },
+    result: {text: "One quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "154" },
+    result: {text: "Ten quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "155" },
+    result: {text: "One hundred quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "156" },
+    result: {text: "One un-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "157" },
+    result: {text: "Ten un-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "158" },
+    result: {text: "One hundred un-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "159" },
+    result: {text: "One duo-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "160" },
+    result: {text: "Ten duo-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "161" },
+    result: {text: "One hundred duo-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "162" },
+    result: {text: "One tres-quinquagin-tillion"} // Confirmed with JB
+  },
+  {
+    input: { coef: "1", exp: "163" },
+    result: {text: "Ten tres-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "164" },
+    result: {text: "One hundred tres-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "165" },
+    result: {text: "One quattuor-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "166" },
+    result: {text: "Ten quattuor-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "167" },
+    result: {text: "One hundred quattuor-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "168" },
+    result: {text: "One quin-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "169" },
+    result: {text: "Ten quin-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "170" },
+    result: {text: "One hundred quin-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "171" },
+    result: {text: "One ses-quinquagin-tillion"} // Confirmed with JB
+  },
+  {
+    input: { coef: "1", exp: "172" },
+    result: {text: "Ten ses-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "173" },
+    result: {text: "One hundred ses-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "174" },
+    result: {text: "One septen-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "175" },
+    result: {text: "Ten septen-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "176" },
+    result: {text: "One hundred septen-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "177" },
+    result: {text: "One octo-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "178" },
+    result: {text: "Ten octo-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "179" },
+    result: {text: "One hundred octo-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "180" },
+    result: {text: "One noven-quinquagin-tillion"} // Confirmed with JB
+  },
+  {
+    input: { coef: "1", exp: "181" },
+    result: {text: "Ten noven-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "182" },
+    result: {text: "One hundred noven-quinquagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "183" },
+    result: {text: "One sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "184" },
+    result: {text: "Ten sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "185" },
+    result: {text: "One hundred sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "186" },
+    result: {text: "One un-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "187" },
+    result: {text: "Ten un-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "188" },
+    result: {text: "One hundred un-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "189" },
+    result: {text: "One duo-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "190" },
+    result: {text: "Ten duo-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "191" },
+    result: {text: "One hundred duo-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "192" },
+    result: {text: "One tre-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "193" },
+    result: {text: "Ten tre-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "194" },
+    result: {text: "One hundred tre-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "195" },
+    result: {text: "One quattuor-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "196" },
+    result: {text: "Ten quattuor-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "197" },
+    result: {text: "One hundred quattuor-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "198" },
+    result: {text: "One quin-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "199" },
+    result: {text: "Ten quin-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "200" },
+    result: {text: "One hundred quin-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "201" },
+    result: {text: "One se-sexagin-tillion"} // Confirmed with JB
+  },
+  {
+    input: { coef: "1", exp: "202" },
+    result: {text: "Ten se-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "203" },
+    result: {text: "One hundred se-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "204" },
+    result: {text: "One septen-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "205" },
+    result: {text: "Ten septen-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "206" },
+    result: {text: "One hundred septen-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "207" },
+    result: {text: "One octo-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "208" },
+    result: {text: "Ten octo-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "209" },
+    result: {text: "One hundred octo-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "210" },
+    result: {text: "One noven-sexagin-tillion"} // Confirmed with JB
+  },
+  {
+    input: { coef: "1", exp: "211" },
+    result: {text: "Ten noven-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "212" },
+    result: {text: "One hundred noven-sexagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "213" },
+    result: {text: "One septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "214" },
+    result: {text: "Ten septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "215" },
+    result: {text: "One hundred septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "216" },
+    result: {text: "One un-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "217" },
+    result: {text: "Ten un-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "218" },
+    result: {text: "One hundred un-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "219" },
+    result: {text: "One duo-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "220" },
+    result: {text: "Ten duo-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "221" },
+    result: {text: "One hundred duo-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "222" },
+    result: {text: "One tre-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "223" },
+    result: {text: "Ten tre-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "224" },
+    result: {text: "One hundred tre-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "225" },
+    result: {text: "One quattuor-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "226" },
+    result: {text: "Ten quattuor-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "227" },
+    result: {text: "One hundred quattuor-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "228" },
+    result: {text: "One quin-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "229" },
+    result: {text: "Ten quin-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "230" },
+    result: {text: "One hundred quin-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "231" },
+    result: {text: "One se-septuagin-tillion"} // Confirmed with JB
+  },
+  {
+    input: { coef: "1", exp: "232" },
+    result: {text: "Ten se-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "233" },
+    result: {text: "One hundred se-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "234" },
+    result: {text: "One septen-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "235" },
+    result: {text: "Ten septen-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "236" },
+    result: {text: "One hundred septen-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "237" },
+    result: {text: "One octo-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "238" },
+    result: {text: "Ten octo-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "239" },
+    result: {text: "One hundred octo-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "240" },
+    result: {text: "One noven-septuagin-tillion"} // Confirmed with JB
+  },
+  {
+    input: { coef: "1", exp: "241" },
+    result: {text: "Ten noven-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "242" },
+    result: {text: "One hundred noven-septuagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "243" },
+    result: {text: "One octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "244" },
+    result: {text: "Ten octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "245" },
+    result: {text: "One hundred octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "246" },
+    result: {text: "One un-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "247" },
+    result: {text: "Ten un-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "248" },
+    result: {text: "One hundred un-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "249" },
+    result: {text: "One duo-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "250" },
+    result: {text: "Ten duo-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "251" },
+    result: {text: "One hundred duo-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "252" },
+    result: {text: "One tres-octogin-tillion"} // Confirmed with JB
+  },
+  {
+    input: { coef: "1", exp: "253" },
+    result: {text: "Ten tres-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "254" },
+    result: {text: "One hundred tres-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "255" },
+    result: {text: "One quattuor-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "256" },
+    result: {text: "Ten quattuor-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "257" },
+    result: {text: "One hundred quattuor-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "258" },
+    result: {text: "One quin-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "259" },
+    result: {text: "Ten quin-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "260" },
+    result: {text: "One hundred quin-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "261" },
+    result: {text: "One sex-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "262" },
+    result: {text: "Ten sex-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "263" },
+    result: {text: "One hundred sex-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "264" },
+    result: {text: "One septem-octogin-tillion"} // Confirmed with JB
+  },
+  {
+    input: { coef: "1", exp: "265" },
+    result: {text: "Ten septem-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "266" },
+    result: {text: "One hundred septem-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "267" },
+    result: {text: "One octo-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "268" },
+    result: {text: "Ten octo-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "269" },
+    result: {text: "One hundred octo-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "270" },
+    result: {text: "One novem-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "271" },
+    result: {text: "Ten novem-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "272" },
+    result: {text: "One hundred novem-octogin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "273" },
+    result: {text: "One nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "274" },
+    result: {text: "Ten nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "275" },
+    result: {text: "One hundred nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "276" },
+    result: {text: "One un-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "277" },
+    result: {text: "Ten un-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "278" },
+    result: {text: "One hundred un-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "279" },
+    result: {text: "One duo-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "280" },
+    result: {text: "Ten duo-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "281" },
+    result: {text: "One hundred duo-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "282" },
+    result: {text: "One tre-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "283" },
+    result: {text: "Ten tre-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "284" },
+    result: {text: "One hundred tre-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "285" },
+    result: {text: "One quattuor-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "286" },
+    result: {text: "Ten quattuor-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "287" },
+    result: {text: "One hundred quattuor-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "288" },
+    result: {text: "One quin-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "289" },
+    result: {text: "Ten quin-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "290" },
+    result: {text: "One hundred quin-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "291" },
+    result: {text: "One se-nonagin-tillion"} // Confirmed with JB
+  },
+  {
+    input: { coef: "1", exp: "292" },
+    result: {text: "Ten se-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "293" },
+    result: {text: "One hundred se-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "294" },
+    result: {text: "One septe-nonagin-tillion"} // Confirmed with JB
+  },
+  {
+    input: { coef: "1", exp: "295" },
+    result: {text: "Ten septe-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "296" },
+    result: {text: "One hundred septe-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "297" },
+    result: {text: "One octo-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "298" },
+    result: {text: "Ten octo-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "299" },
+    result: {text: "One hundred octo-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "300" },
+    result: {text: "One nove-nonagin-tillion"} // Confirmed with JB
+  },
+  {
+    input: { coef: "1", exp: "301" },
+    result: {text: "Ten nove-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "302" },
+    result: {text: "One hundred nove-nonagin-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "303" },
+    result: {text: "One cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "306" },
+    result: {text: "One un-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "309" },
+    result: {text: "One duo-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "312" },
+    result: {text: "One tres-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "315" },
+    result: {text: "One quattuor-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "318" },
+    result: {text: "One quin-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "321" },
+    result: {text: "One sex-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "324" },
+    result: {text: "One septen-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "327" },
+    result: {text: "One octo-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "330" },
+    result: {text: "One noven-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "333" },
+    result: {text: "One deci-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "336" },
+    result: {text: "One un-deci-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "363" },
+    result: {text: "One viginti-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "393" },
+    result: {text: "One triginta-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "423" },
+    result: {text: "One quadraginta-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "603" },
+    result: {text: "One ducen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "903" },
+    result: {text: "One trecen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "1203" },
+    result: {text: "One quadringen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "1503" },
+    result: {text: "One quingen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "1803" },
+    result: {text: "One sescen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "2103" },
+    result: {text: "One septingen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "2403" },
+    result: {text: "One octingen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "2703" },
+    result: {text: "One nongen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "3000" },
+    result: {text: "One nove-nonaginta-nongen-tillion"}
+  },
+];
+
+const TEST_CASES_TIER2 = [
+{
+    input: { coef: "1", exp: "3003" },
+    result: {text: "One mi-lli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "3006" },
+    result: {text: "One mi-lli-uni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "3033" },
+    result: {text: "One mi-lli-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "3036" },
+    result: {text: "One mi-lli-un-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "3303" },
+    result: {text: "One mi-lli-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "3333" },
+    result: {text: "One mi-lli-deci-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "3336" },
+    result: {text: "One mi-lli-un-deci-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "6000" },
+    result: {text: "One mi-lli-nove-nonaginta-nongen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "6003" },
+    result: {text: "One bi-lli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "8973" },
+    result: {text: "One bi-lli-nonaginta-nongen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "9999" },
+    result: {text: "One tri-lli-duo-triginta-trecen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "11661" },
+    result: {text: "One tri-lli-sex-octoginta-octingen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "12345" },
+    result: {text: "One quadri-lli-quattuor-deci-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "30003" },
+    result: {text: "One dec-illi-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "32000" },
+    result: {text: "One hundred dec-illi-quin-sexaginta-sescen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "33003" },
+    result: {text: "One un-dec-illi-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "60003" },
+    result: {text: "One vigin-tilli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "90003" },
+    result: {text: "One trigin-tilli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "123456" },
+    result: {text: "One un-quadragin-tilli-un-quinquaginta-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "300003" },
+    result: {text: "One cen-tilli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "300006" },
+    result: {text: "One cen-tilli-uni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "300036" },
+    result: {text: "One cen-tilli-un-dec-illion"}
+  },
+  {
+    input: { coef: "1", exp: "300336" },
+    result: {text: "One cen-tilli-un-deci-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "303336" },
+    result: {text: "One un-cen-tilli-un-deci-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "333336" },
+    result: {text: "One un-deci-cen-tilli-un-deci-cen-tillion"}
+  },
+  {
+    input: { coef: "1", exp: "600003" },
+    result: {text: "One ducen-tilli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "3000003" },
+    result: {text: "One mi-lli-ni-lli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "3000006" },
+    result: {text: "One mi-lli-ni-lli-uni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "3003003" },
+    result: {text: "One mi-lli-uni-lli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "3003006" },
+    result: {text: "One mi-lli-uni-lli-uni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "6000003" },
+    result: {text: "One bi-lli-ni-lli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "30000003" },
+    result: {text: "One dec-illi-ni-lli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "300000003" },
+    result: {text: "One cen-tilli-ni-lli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "3000000003" },
+    result: {text: "One mi-lli-ni-lli-ni-lli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "3000000000003" },
+    result: {text: "One mi-lli-ni-lli-ni-lli-ni-lli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "3000000000000003" },
+    result: {text: "One mi-lli-ni-lli-ni-lli-ni-lli-ni-lli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "3000000000000000003" },
+    result: {text: "One mi-lli-ni-lli-ni-lli-ni-lli-ni-lli-ni-lli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "3000000000000000000003" },
+    result: {text: "One mi-lli-ni-lli-ni-lli-ni-lli-ni-lli-ni-lli-ni-lli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "3000000000000000000000003" },
+    result: {text: "One mi-lli-ni-lli-ni-lli-ni-lli-ni-lli-ni-lli-ni-lli-ni-lli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "3000000000000000000000000003" },
+    result: {text: "One mi-lli-ni-lli-ni-lli-ni-lli-ni-lli-ni-lli-ni-lli-ni-lli-ni-lli-ni-llion"}
+  },
+  {
+    input: { coef: "1", exp: "369369369369369369369369369003" },
+    result: {text: "One tres-viginti-cen-tilli-tres-viginti-cen-tilli-tres-viginti-cen-tilli-tres-viginti-cen-tilli-tres-viginti-cen-tilli-tres-viginti-cen-tilli-tres-viginti-cen-tilli-tres-viginti-cen-tilli-tres-viginti-cen-tilli-ni-llion"}
+  },
+  // Googolplex
+  {
+    input: { coef: "1", exp: (10n ** 100n).toString() },
+    result: {text: "Ten tri-lli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-tres-triginta-trecen-tilli-duo-triginta-trecen-tillion"}
+  },
+]
+
+const resultsTier1 = ref<TestResult[]>([]);
+const resultsTier2 = ref<TestResult[]>([]);
+
+function runTest(tests: TestCase[], results: Ref) {
+  for (let test of tests) {
+    test.result.text = test.result.text;
+    const conv = new EngNumConv(test.input).setOptions({system: "DIC"});
+    const result = conv.convert().toText(ResultFormat.HYPHENS);
+    results.value.push({
+      input: test.input,
+      output: result,
+      assertion: result.trim() === test.result.text,
+      correct: test.result.text
+    });
+  }
+}
+
+runTest(TEST_CASES_TIER1, resultsTier1);
+runTest(TEST_CASES_TIER2, resultsTier2);
+
+</script>
+
+<template>
+<div class="test-report">
+  <h1>Tier 1</h1>
+  <ol>
+    <Testcase :cases="resultsTier1" />
+  </ol>
+  <h1>Tier 2</h1>
+  <ol>
+    <Testcase :cases="resultsTier2" />
+  </ol>
+</div>
+</template>
