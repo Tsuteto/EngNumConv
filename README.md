@@ -3,7 +3,7 @@
 Vue.jsで実装してみました。JS標準のBigIntも面倒ながら使っています。<br>（BigIntは以前「仏典数詞変換」で使用したライブラリのように実数の計算に対応してもらわないと指数表記との相性が悪い。。）
 
 こちらで使えます。<br/>
-https://tsuteto.github.io/EngNumConv/index.html
+https://tsuteto.github.io/EngNumConv/
 
 ## 機能
 - ショートスケール、ロングスケール両対応
