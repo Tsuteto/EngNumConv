@@ -5,7 +5,7 @@ import { RouterLink, RouterView } from 'vue-router';
 <template>
   <header>
     <h1>英語数詞変換</h1>
-    <p>数字を英語の読み方に変換します。<wbr/>拡張定義により大きな数 <wbr/>10<sup> [ 3 × 10<sup> { 3 × 10<sup> ( 3 × 10<sup> 45</sup> - 1 )</sup> }</sup> + 3 ]</sup> <wbr/>まで対応。</p>
+    <p>数字を英語の読み方に変換します。<wbr/>拡張定義により大きな数&nbsp;<wbr/>10<sup>&nbsp;[&nbsp;3&nbsp;×&nbsp;10<sup>&nbsp;{&nbsp;3&nbsp;×&nbsp;10<sup>&nbsp;(&nbsp;3&nbsp;×&nbsp;10<sup>&nbsp;45</sup>&nbsp;-&nbsp;1&nbsp;)</sup>&nbsp;}</sup>&nbsp;+&nbsp;3&nbsp;]</sup>&nbsp;<wbr/>まで対応。</p>
   </header>
 
   <RouterView />
@@ -56,13 +56,14 @@ nav a:first-of-type {
 
   header h1 {
     border-right: none;
-    margin: 1em 0 0;
+    margin: 0;
     padding: 0;
   }
 
   header p {
     margin: 0;
-    white-space: nowrap;
+    word-break: keep-all;
+    font-size: 12px;
   }
 }
 

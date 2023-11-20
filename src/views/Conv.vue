@@ -480,14 +480,14 @@ export enum WordStyle {
       <li>小数が発生した場合は切り捨てます。</li>
       <li>変換処理はJavaScriptで完結しサーバ等との通信は発生しません。</li>
       <li>「数字」入力モードで大量の数字（10万桁以上）を変換する際は時間と負荷が掛かる場合があるので注意。</li>
-      <li>そのほか<a href="https://github.com/Tsuteto/EngNumConv/blob/main/README.md" target="_blank">詳細な説明はこちらへ</a></li>
+      <li>そのほか<strong><a href="https://github.com/Tsuteto/EngNumConv/blob/main/README.md" target="_blank">詳細な説明はこちらへ</a></strong></li>
     </ul>
     
     <hr/>
 
     <div class="box box-conv">
       <div class="box-cont">
-        <p>v1.0.1 - made by <a href="https://twitter.com/tsuteto">@tsuteto</a>, 2023.11.16<br />
+        <p>v1.0.2 - made by <a href="https://twitter.com/tsuteto">@tsuteto</a>, last updated 2023.11.20, released 2023.11.16<br />
           <a href="https://github.com/Tsuteto/EngNumConv">Source available on GitHub</a>
         </p>
       </div>
@@ -516,7 +516,7 @@ export enum WordStyle {
 
 hr {
   border: none;
-  border-bottom: 1px solid #fff3;
+  border-bottom: 1px solid var(--color-separator);
 }
 
 /* SWITCHER */
