@@ -69,7 +69,7 @@ See package.json
 ## License
 MIT License
 
-## Acknowledgements
+## Acknowledgments
 - [Googology Wiki](https://googology.fandom.com/wiki/Googology_Wiki) - I learned names of big numbers a lot there.
 - [Pointless large Number Stuff](https://sites.google.com/site/pointlesslargenumberstuff/home/1/bowersillions) by cookiefonster - Detailed explanation of the Bowsers' number system. This helped me a lot to implement.
 - [Extended Standard](https://docs.google.com/document/d/1K8Oj1As5p8S4hq_9zY_ZD29jdkLw7ZRV7Ka-5J8toE4/edit#heading=h.ghx2w5sladbm) in [Aarex Googology](https://aarextiaokhiao.github.io/googology.html) by Aarex Tiaokhiao - Another explanation of the number system. This also helped me.
